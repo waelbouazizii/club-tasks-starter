@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+_export_check/
+expo-env.d.ts
+
+# logs
+*.log
+npm-debug.*
+
+# typescript / OS
+*.tsbuildinfo
+.DS_Store
