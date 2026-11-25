@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
+import TaskItem from '../components/TaskItem';
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Club Tasks</Text>
-      <Text style={styles.subtitle}>Ma première application React Native</Text>
+      <TaskItem title="Installer Node.js" done={true} onToggle={() => {}} />
+      <TaskItem title="Créer le projet Expo" done={false} onToggle={() => {}} />
     </View>
   );
 }
@@ -12,5 +14,4 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
   title: { fontSize: 28, fontWeight: '700' },
-  subtitle: { fontSize: 16, color: '#495057' },
 });
