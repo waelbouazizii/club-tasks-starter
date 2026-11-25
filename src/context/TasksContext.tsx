@@ -6,6 +6,7 @@ type TasksContextValue = {
   tasks: Task[];
   addTask: (title: string) => void;
   toggleTask: (id: string) => void;
+  importTasks: (newTasks: Task[]) => void;
 };
 
 const INITIAL_TASKS: Task[] = [
@@ -27,8 +28,17 @@ export function TasksProvider({ children }: { children: ReactNode }) {
     setTasks((current) => current.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
   }
 
+  function importTasks(newTasks: Task[]) {
+    setTasks((current) => [
+      ...current,
+      ...newTasks.filter((task) => !current.some((t) => t.id === task.id)),
+    ]);
+  }
+
   return (
-    <TasksContext.Provider value={{ tasks, addTask, toggleTask }}>{children}</TasksContext.Provider>
+    <TasksContext.Provider value={{ tasks, addTask, toggleTask, importTasks }}>
+      {children}
+    </TasksContext.Provider>
   );
 }
 
