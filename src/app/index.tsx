@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Link } from 'expo-router';
 import TaskItem from '../components/TaskItem';
 import Clock from '../components/Clock';
 
@@ -52,7 +53,14 @@ export default function Index() {
         keyExtractor={(t) => t.id}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
-          <TaskItem title={item.title} done={item.done} onToggle={() => toggleTask(item.id)} />
+          <View style={styles.row}>
+            <View style={styles.rowMain}>
+              <TaskItem title={item.title} done={item.done} onToggle={() => toggleTask(item.id)} />
+            </View>
+            <Link href={{ pathname: '/task/[id]', params: { id: item.id } }} style={styles.link}>
+              Détails
+            </Link>
+          </View>
         )}
       />
     </View>
@@ -68,4 +76,7 @@ const styles = StyleSheet.create({
   button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
   buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
   list: { gap: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  rowMain: { flex: 1 },
+  link: { color: '#1c7ed6', fontSize: 16, fontWeight: '600', padding: 8 },
 });
