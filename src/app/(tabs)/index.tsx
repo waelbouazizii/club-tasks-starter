@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Link } from 'expo-router';
-import TaskItem from '../components/TaskItem';
-import Clock from '../components/Clock';
-import { useTasks } from '../context/TasksContext';
+import TaskItem from '../../components/TaskItem';
+import Clock from '../../components/Clock';
+import { useTasks } from '../../context/TasksContext';
 
 export default function Index() {
   const { tasks, addTask, toggleTask } = useTasks();
