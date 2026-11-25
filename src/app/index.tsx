@@ -3,30 +3,19 @@ import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-na
 import { Link } from 'expo-router';
 import TaskItem from '../components/TaskItem';
 import Clock from '../components/Clock';
-
-type Task = { id: string; title: string; done: boolean };
-
-const INITIAL_TASKS: Task[] = [
-  { id: '1', title: 'Installer Node.js', done: true },
-  { id: '2', title: 'Créer le projet Expo', done: true },
-  { id: '3', title: 'Comprendre useState', done: false },
-];
+import { useTasks } from '../context/TasksContext';
 
 export default function Index() {
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+  const { tasks, addTask, toggleTask } = useTasks();
   const [text, setText] = useState('');
 
   const remaining = tasks.filter((t) => !t.done).length;
 
-  function addTask() {
+  function handleAdd() {
     const title = text.trim();
     if (title === '') return;
-    setTasks([...tasks, { id: Date.now().toString(), title, done: false }]);
+    addTask(title);
     setText('');
-  }
-
-  function toggleTask(id: string) {
-    setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
   }
 
   return (
@@ -41,9 +30,9 @@ export default function Index() {
           value={text}
           onChangeText={setText}
           placeholder="Nouvelle tâche"
-          onSubmitEditing={addTask}
+          onSubmitEditing={handleAdd}
         />
-        <Pressable style={styles.button} onPress={addTask}>
+        <Pressable style={styles.button} onPress={handleAdd}>
           <Text style={styles.buttonText}>Ajouter</Text>
         </Pressable>
       </View>
