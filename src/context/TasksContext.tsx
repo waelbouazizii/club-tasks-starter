@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type Task = { id: string; title: string; done: boolean };
 
@@ -15,10 +16,36 @@ const INITIAL_TASKS: Task[] = [
   { id: '3', title: 'Comprendre useState', done: false },
 ];
 
+const STORAGE_KEY = 'club-tasks';
+
 const TasksContext = createContext<TasksContextValue | null>(null);
 
 export function TasksProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const json = await AsyncStorage.getItem(STORAGE_KEY);
+        if (json !== null) {
+          setTasks(JSON.parse(json) as Task[]);
+        }
+      } catch (error) {
+        console.warn('Lecture impossible', error);
+      } finally {
+        setLoaded(true);
+      }
+    }
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)).catch((error) => {
+      console.warn('Sauvegarde impossible', error);
+    });
+  }, [tasks, loaded]);
 
   function addTask(title: string) {
     setTasks((current) => [...current, { id: Date.now().toString(), title, done: false }]);
