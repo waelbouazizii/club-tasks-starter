@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import TaskItem from '../components/TaskItem';
+import Clock from '../components/Clock';
 
 type Task = { id: string; title: string; done: boolean };
 
@@ -30,6 +31,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Club Tasks</Text>
+      <Clock />
       <Text style={styles.subtitle}>{remaining} tâche(s) restante(s)</Text>
 
       <View style={styles.inputRow}>
